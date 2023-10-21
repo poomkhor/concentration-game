@@ -12,9 +12,27 @@ main {
 }
 
 .container {
+    display: flex;
 }
 
 .card-container {
+    display: grid;
+    grid-template-columns: repeat(6, 10vmin);
+    margin: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-container > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10vmin;
+    height: 10vmin;
+    background-color: orchid;
+    border: 3px solid rgb(102, 0, 255);
+    font-size: 3em;
+    border-radius: 20%;
 }
 
 .game-controller {
@@ -33,4 +51,15 @@ main {
 }
 
 .match {
+}
+
+.message-on-top {
+}
+
+.message-on-top.not-visible {
+    display: None;
+}
+
+.message-on-top.visible {
+    display: flex;
 }
