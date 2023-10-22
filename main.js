@@ -17,6 +17,10 @@ let win;
 let level;
 let attempt;
 let match;
+let divID;
+let cardIdx;
+let hangtime;
+let imgHref;
 
 // accessing the DOM element during event listener ('click')
 // cache HTML element
@@ -33,13 +37,57 @@ function init() {
     attempt = 0;
     match = 0;
     // game init state
-    cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    divID = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+    ];
+    cardIdx = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3,
+        4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+    ];
+    // hang time
+    hangtime = { 1: 3, 2: 2.5, 3: 2, 4: 1.5, 5: 1, 6: 0.5 };
+    // create a shuffling function and map to divID array
+    cardState = cardRandomState();
+    console.info(cardState);
+    // made an object that will map cardIdx to img href
+    imgHref = {};
 }
 
 // add 'CONTROLLER' to listen to users action and set function that should manipulate the model
 cardElement.addEventListener('click', function (event) {
     event.preventDefault();
-    return;
     // flip card and check if two card is opened?
-    //
+    // get the id of the card
+    const cardNumber = event.target.dataset.id;
+    // check number of card being displayed, 1 allow more click, 2 wait for hang time
+    displayCard(cardNumber);
+    // check if match, matched keep displayed
 });
+
+function cardRandomState() {
+    // got this from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array// not fully understand this, but it should be working with small array.
+    let shuffleCard = cardIdx.sort(() => Math.random() - 0.5);
+    // console.log(shuffleCard);
+    let cardStateObj = {};
+    divID.forEach((el, idx) => {
+        cardStateObj[el] = shuffleCard[idx];
+    });
+    return cardStateObj;
+}
+
+function displayCard(cardNumber) {
+    // check if card open
+    cardOpen = document.querySelectorAll('.show-img').length;
+    if ((cardOpen - match * 2) % 2 === 1)
+        // open card
+        // cardInt = parseInt(cardNumber);
+        cardSelector = `[data-id="${cardNumber}"]`;
+    const cell = document.querySelector(cardSelector);
+    cell.classList.add('show-img');
+    cell.innerHTML = cardState[cardNumber];
+    console.info(cell);
+    console.info(cardElement);
+}
+
+function checkMatch() {}
