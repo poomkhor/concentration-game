@@ -3,12 +3,20 @@
 }
 
 body {
+    background-color: #eaf2e3;
 }
 
 header {
+    display: flex;
+    width: 100%;
+    background-color: yellowgreen;
+    padding: 20px;
+    margin: 0;
+    justify-content: center;
 }
 
 main {
+    display: flex;
 }
 
 .container {
@@ -21,13 +29,14 @@ main {
     margin: 30px;
     align-items: center;
     justify-content: center;
+    gap: 10px;
 }
 
 .card-container > div {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10vmin;
+    width: 8vmin;
     height: 10vmin;
     background-color: orchid;
     border: 3px solid rgb(102, 0, 255);
@@ -36,6 +45,14 @@ main {
 }
 
 .game-controller {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.game-controller > div {
+    display: flex;
+    justify-content: center;
 }
 
 .score {
