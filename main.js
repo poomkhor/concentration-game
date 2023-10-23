@@ -46,7 +46,7 @@ function init() {
         4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
     ];
     // hang time
-    hangtime = { 1: 3, 2: 2.5, 3: 2, 4: 1.5, 5: 1, 6: 0.5 };
+    hangtime = { 1: 3000, 2: 2500, 3: 2000, 4: 1500, 5: 1000, 6: 500 };
     // create a shuffling function and map to divID array
     cardState = cardRandomState();
     console.info(cardState);
@@ -62,6 +62,7 @@ cardElement.addEventListener('click', function (event) {
     const cardNumber = event.target.dataset.id;
     // check number of card being displayed, 1 allow more click, 2 wait for hang time
     displayCard(cardNumber);
+    checkMatch();
     // check if match, matched keep displayed
 });
 
@@ -77,17 +78,43 @@ function cardRandomState() {
 }
 
 function displayCard(cardNumber) {
-    // check if card open
-    cardOpen = document.querySelectorAll('.show-img').length;
-    if ((cardOpen - match * 2) % 2 === 1)
-        // open card
-        // cardInt = parseInt(cardNumber);
+    // check if card open with exact class show-img
+    cardOpen = document.querySelectorAll('.show-img:not(.match)').length;
+    if (cardOpen === 1 || cardOpen === 0) {
         cardSelector = `[data-id="${cardNumber}"]`;
-    const cell = document.querySelector(cardSelector);
-    cell.classList.add('show-img');
-    cell.innerHTML = cardState[cardNumber];
-    console.info(cell);
-    console.info(cardElement);
+        const cell = document.querySelector(cardSelector);
+        cell.classList.add('show-img');
+        // below will later be replace with image href from imgHref
+        cell.innerHTML = cardState[cardNumber];
+    } else if (cardOpen === 2) {
+        // cardOpen === 2 , return;
+        return;
+    }
 }
 
-function checkMatch() {}
+function checkMatch() {
+    // check card with only class='show-img' if innerHTML match? then add match class, or move to returnCard function
+    const cards = document.querySelectorAll('.show-img:not(.match)');
+    if (cards.length === 2) {
+        const card1 = cards[0];
+        const card2 = cards[1];
+        if (card1.innerHTML === card2.innerHTML) {
+            card1.classList.add('match');
+            card2.classList.add('match');
+            match += 1;
+        } else {
+            setTimeout(returnCard, hangtime[level]);
+        }
+    }
+}
+
+function returnCard() {
+    // hangtime then remove the show-img class
+    const cards = document.querySelectorAll('.show-img:not(.match)');
+    const card1 = cards[0];
+    const card2 = cards[1];
+    card1.classList.remove('show-img');
+    card1.innerHTML = '';
+    card2.classList.remove('show-img');
+    card2.innerHTML = '';
+}
