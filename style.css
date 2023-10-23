@@ -80,3 +80,7 @@ main {
 .message-on-top.visible {
     display: flex;
 }
+
+.show-img {
+    background-color: #eaf2e3;
+}

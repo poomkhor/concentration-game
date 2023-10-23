@@ -21,21 +21,30 @@ let divID;
 let cardIdx;
 let hangtime;
 let imgHref;
+let score;
 
 // accessing the DOM element during event listener ('click')
 // cache HTML element
 const cardElement = document.querySelector('.card-container');
 const resetElement = document.querySelector('button');
-
+const levelElement = document.querySelector('.level-dom');
+const attemptElement = document.querySelector('.attempt-dom');
+const matchElement = document.querySelector('.match-dom');
+const h2Element = document.querySelector('h2');
 // initialize the game state --> 'MODEL'
 
 init();
 
 function init() {
     win = undefined;
+    score = 0;
     level = 1;
+    // display level, attempt , and match
+    levelElement.innerHTML = level;
     attempt = 0;
+    attemptElement.innerHTML = attempt;
     match = 0;
+    matchElement.innerHTML = match;
     // game init state
     divID = [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -63,6 +72,7 @@ cardElement.addEventListener('click', function (event) {
     // check number of card being displayed, 1 allow more click, 2 wait for hang time
     displayCard(cardNumber);
     checkMatch();
+    checkWin();
     // check if match, matched keep displayed
 });
 
@@ -80,14 +90,26 @@ function cardRandomState() {
 function displayCard(cardNumber) {
     // check if card open with exact class show-img
     cardOpen = document.querySelectorAll('.show-img:not(.match)').length;
-    if (cardOpen === 1 || cardOpen === 0) {
+    console.log('card open ', cardOpen);
+    if (cardOpen === 0) {
         cardSelector = `[data-id="${cardNumber}"]`;
         const cell = document.querySelector(cardSelector);
         cell.classList.add('show-img');
         // below will later be replace with image href from imgHref
         cell.innerHTML = cardState[cardNumber];
+    } else if (cardOpen === 1) {
+        cardSelector = `[data-id="${cardNumber}"]`;
+        const cell = document.querySelector(cardSelector);
+        cell.classList.add('show-img');
+        // below will later be replace with image href from imgHref
+        cell.innerHTML = cardState[cardNumber];
+        attempt += 1;
+        // display
+        console.log(attempt);
+        attemptElement.innerHTML = attempt;
     } else if (cardOpen === 2) {
-        // cardOpen === 2 , return;
+        return;
+    } else if (attempt === 70) {
         return;
     }
 }
@@ -102,6 +124,7 @@ function checkMatch() {
             card1.classList.add('match');
             card2.classList.add('match');
             match += 1;
+            matchElement.innerHTML = match;
         } else {
             setTimeout(returnCard, hangtime[level]);
         }
@@ -117,4 +140,26 @@ function returnCard() {
     card1.innerHTML = '';
     card2.classList.remove('show-img');
     card2.innerHTML = '';
+}
+
+function checkWin() {
+    const cardMatch = document.querySelectorAll('.match').length;
+    if (cardMatch === 36) {
+        // calcScore()
+        // check level
+        if (level === 6) {
+            h2Element.innerHTML = `You Made It ALL!, What a GENIUS!! Your Total Score is ${score}`;
+        } else {
+            h2Element.innerHTML = `You Won, Next Level ${level + 1}`;
+            level += 1;
+        }
+    } else if (attempt === 70) {
+        h2Element.innerHTML = "Sorry, You've MAXED OUT!!";
+    }
+
+    // need to check timer
+}
+
+function calcScore() {
+    // score will be calc once card match === 36 and increment with each level
 }
