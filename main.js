@@ -27,7 +27,9 @@ let score;
 // cache HTML element
 const cardElement = document.querySelector('.card-container');
 const resetElement = document.querySelector('button');
+const scoreElement = document.querySelector('.score-dom');
 const levelElement = document.querySelector('.level-dom');
+const timerElement = document.querySelector('.countdown-dom');
 const attemptElement = document.querySelector('.attempt-dom');
 const matchElement = document.querySelector('.match-dom');
 const h2Element = document.querySelector('h2');
@@ -36,29 +38,39 @@ const h2Element = document.querySelector('h2');
 init();
 
 function init() {
+    h2Element.innerHTML = '';
     win = undefined;
     score = 0;
+    scoreElement.innerHTML = score;
     level = 1;
     // display level, attempt , and match
     levelElement.innerHTML = level;
-    attempt = 0;
+    // set timer
+    clearInterval();
+    resetTimer();
+    // checkTimer
+    if (timerElement) attempt = 0;
     attemptElement.innerHTML = attempt;
     match = 0;
     matchElement.innerHTML = match;
     // game init state
-    divID = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-    ];
-    cardIdx = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3,
-        4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-    ];
+    // divID = [
+    //     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    //     21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+    // ];
+    // cardIdx = [
+    //     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3,
+    //     4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+    // ];
+
+    divID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    cardIdx = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
+
     // hang time
     hangtime = { 1: 3000, 2: 2500, 3: 2000, 4: 1500, 5: 1000, 6: 500 };
     // create a shuffling function and map to divID array
     cardState = cardRandomState();
-    console.info(cardState);
+    console.log(cardState);
     // made an object that will map cardIdx to img href
     imgHref = {};
 }
@@ -66,6 +78,9 @@ function init() {
 // add 'CONTROLLER' to listen to users action and set function that should manipulate the model
 cardElement.addEventListener('click', function (event) {
     event.preventDefault();
+    if (win === false) {
+        return;
+    }
     // flip card and check if two card is opened?
     // get the id of the card
     const cardNumber = event.target.dataset.id;
@@ -74,6 +89,12 @@ cardElement.addEventListener('click', function (event) {
     checkMatch();
     checkWin();
     // check if match, matched keep displayed
+});
+
+// reinit the game when the reset button is clicked
+resetElement.addEventListener('click', function (event) {
+    // event.preventDefault();
+    init();
 });
 
 function cardRandomState() {
@@ -111,6 +132,8 @@ function displayCard(cardNumber) {
         return;
     } else if (attempt === 70) {
         return;
+    } else if (win === false) {
+        return;
     }
 }
 
@@ -143,23 +166,71 @@ function returnCard() {
 }
 
 function checkWin() {
+    // check if number of card with class match === 36
     const cardMatch = document.querySelectorAll('.match').length;
-    if (cardMatch === 36) {
+    if (cardMatch === cardIdx.length) {
         // calcScore()
         // check level
+        win = true;
         if (level === 6) {
             h2Element.innerHTML = `You Made It ALL!, What a GENIUS!! Your Total Score is ${score}`;
         } else {
-            h2Element.innerHTML = `You Won, Next Level ${level + 1}`;
             level += 1;
+            h2Element.innerHTML = `You Won, Next Level ${level}`;
+            // need to resetState for next level
+            resetState();
+            win = undefined;
+            resetTimer();
         }
     } else if (attempt === 70) {
+        win = false;
         h2Element.innerHTML = "Sorry, You've MAXED OUT!!";
     }
-
-    // need to check timer
 }
 
 function calcScore() {
     // score will be calc once card match === 36 and increment with each level
+}
+
+function resetState() {
+    // resetState to continue to next level
+    score = score;
+    // display level, attempt , and match
+    levelElement.innerHTML = level;
+    attempt = 0;
+    attemptElement.innerHTML = attempt;
+    match = 0;
+    matchElement.innerHTML = match;
+}
+
+function resetTimer() {
+    // timer for 3 minutes and timer should stop if win = true
+    minute = 1;
+    second = 0;
+    const timer = setInterval(() => {
+        if (second === 0) {
+            if (minute === 0) {
+                clearInterval(timer);
+                h2Element.innerHTML =
+                    'You Lose, Your Time is OUT!! Restart Again';
+                win = false;
+            } else if (win === undefined) {
+                second = 59;
+                minute--;
+            } else if (win === true) {
+                clearInterval(timer);
+                return;
+            }
+        } else if (win === undefined) {
+            second--;
+        } else if (win === true) {
+            clearInterval(timer);
+            return;
+        }
+        timeString =
+            minute.toString().padStart(2, '0') +
+            ':' +
+            second.toString().padStart(2, '0');
+        timerElement.innerHTML = timeString;
+    }, 1000);
 }
