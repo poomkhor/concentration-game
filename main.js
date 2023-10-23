@@ -22,6 +22,7 @@ let cardIdx;
 let hangtime;
 let imgHref;
 let score;
+let timer;
 
 // accessing the DOM element during event listener ('click')
 // cache HTML element
@@ -38,7 +39,6 @@ const h2Element = document.querySelector('h2');
 init();
 
 function init() {
-    h2Element.innerHTML = '';
     win = undefined;
     score = 0;
     scoreElement.innerHTML = score;
@@ -46,10 +46,8 @@ function init() {
     // display level, attempt , and match
     levelElement.innerHTML = level;
     // set timer
-    clearInterval();
     resetTimer();
-    // checkTimer
-    if (timerElement) attempt = 0;
+    attempt = 0;
     attemptElement.innerHTML = attempt;
     match = 0;
     matchElement.innerHTML = match;
@@ -63,14 +61,17 @@ function init() {
     //     4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
     // ];
 
-    divID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    cardIdx = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
+    // divID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    // cardIdx = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
+    divID = [1, 2, 3, 4, 5, 6];
+    cardIdx = [1, 2, 3, 1, 2, 3];
 
     // hang time
     hangtime = { 1: 3000, 2: 2500, 3: 2000, 4: 1500, 5: 1000, 6: 500 };
     // create a shuffling function and map to divID array
     cardState = cardRandomState();
     console.log(cardState);
+
     // made an object that will map cardIdx to img href
     imgHref = {};
 }
@@ -85,16 +86,26 @@ cardElement.addEventListener('click', function (event) {
     // get the id of the card
     const cardNumber = event.target.dataset.id;
     // check number of card being displayed, 1 allow more click, 2 wait for hang time
+    console.info(cardElement);
     displayCard(cardNumber);
     checkMatch();
     checkWin();
+    console.info('win ', win);
     // check if match, matched keep displayed
 });
 
 // reinit the game when the reset button is clicked
 resetElement.addEventListener('click', function (event) {
-    // event.preventDefault();
+    event.preventDefault();
     init();
+    h2Element.innerHTML = '';
+    const cardAll = document.querySelectorAll('.card-container>div');
+    // console.info('Card All ', cardAll);
+    for (let el of cardAll) {
+        el.innerHTML = '';
+        el.classList.remove('show-img');
+        el.classList.remove('match');
+    }
 });
 
 function cardRandomState() {
@@ -111,7 +122,7 @@ function cardRandomState() {
 function displayCard(cardNumber) {
     // check if card open with exact class show-img
     cardOpen = document.querySelectorAll('.show-img:not(.match)').length;
-    console.log('card open ', cardOpen);
+    // console.log('card open ', cardOpen);
     if (cardOpen === 0) {
         cardSelector = `[data-id="${cardNumber}"]`;
         const cell = document.querySelector(cardSelector);
@@ -126,7 +137,7 @@ function displayCard(cardNumber) {
         cell.innerHTML = cardState[cardNumber];
         attempt += 1;
         // display
-        console.log(attempt);
+        console.log('attempt ', attempt);
         attemptElement.innerHTML = attempt;
     } else if (cardOpen === 2) {
         return;
@@ -167,20 +178,18 @@ function returnCard() {
 
 function checkWin() {
     // check if number of card with class match === 36
-    const cardMatch = document.querySelectorAll('.match').length;
-    if (cardMatch === cardIdx.length) {
-        // calcScore()
+    const cardMatch = document.querySelectorAll('.show-img.match');
+    if (cardMatch.length === cardIdx.length) {
+        calcScore();
         // check level
         win = true;
         if (level === 6) {
             h2Element.innerHTML = `You Made It ALL!, What a GENIUS!! Your Total Score is ${score}`;
         } else {
-            level += 1;
+            level++;
             h2Element.innerHTML = `You Won, Next Level ${level}`;
-            // need to resetState for next level
-            resetState();
-            win = undefined;
-            resetTimer();
+            // need to resetState for next level after 6 seconds
+            setTimeout(resetState, 6000);
         }
     } else if (attempt === 70) {
         win = false;
@@ -190,6 +199,16 @@ function checkWin() {
 
 function calcScore() {
     // score will be calc once card match === 36 and increment with each level
+    const timeArr = timerElement.innerHTML.split(':');
+    seconds = timeArr[0] * 60 + timeArr[1];
+    score = seconds * 10 - attempt;
+    console.info('score ', score);
+    if (level === 1) {
+        scoreElement.innerHTML = score;
+    } else {
+        score = score + parseInt(scoreElement.innerHTML);
+        scoreElement.innerHTML = score;
+    }
 }
 
 function resetState() {
@@ -201,13 +220,29 @@ function resetState() {
     attemptElement.innerHTML = attempt;
     match = 0;
     matchElement.innerHTML = match;
+    resetTimer();
+    win = undefined;
+    console.info('reset state win ', win);
+    // reset card innerHTML
+    // remove class show-img and match
+    const cardMatch = document.querySelectorAll('.show-img.match');
+    for (let el of cardMatch) {
+        el.innerHTML = '';
+        el.classList.remove('show-img');
+        el.classList.remove('match');
+    }
 }
 
 function resetTimer() {
     // timer for 3 minutes and timer should stop if win = true
-    minute = 1;
-    second = 0;
-    const timer = setInterval(() => {
+    minute = 0;
+    second = 30;
+    if (timer) {
+        clearInterval(timer);
+        timer = undefined;
+    }
+    // else {
+    timer = setInterval(() => {
         if (second === 0) {
             if (minute === 0) {
                 clearInterval(timer);
@@ -227,10 +262,12 @@ function resetTimer() {
             clearInterval(timer);
             return;
         }
+
         timeString =
             minute.toString().padStart(2, '0') +
             ':' +
             second.toString().padStart(2, '0');
         timerElement.innerHTML = timeString;
     }, 1000);
+    // }
 }
