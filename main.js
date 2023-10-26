@@ -246,7 +246,7 @@ function resetState() {
 
 function resetTimer() {
     // timer for 3 minutes and timer should stop if win = true
-    minute = 1;
+    minute = 3;
     second = 0;
     if (timer) {
         clearInterval(timer);
