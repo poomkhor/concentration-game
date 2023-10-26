@@ -92,6 +92,7 @@ img {
     align-items: center;
     padding: 10px;
     gap: 5px;
+    border-radius: 30px;
 }
 
 .game-controller > div {
@@ -108,7 +109,7 @@ button {
     color: white;
     font-family: 'Rasa';
     font-size: 4vmin;
-    border-radius: 12%;
+    border-radius: 15px;
     /* margin: 5px; */
 }
 
@@ -116,35 +117,35 @@ button {
     background-color: #2d1e2f;
     padding: 5px;
     color: whitesmoke;
-    border-radius: 8%;
+    border-radius: 10px;
 }
 
 .level {
     background-color: #2d1e2f;
     padding: 5px;
     color: whitesmoke;
-    border-radius: 8%;
+    border-radius: 10px;
 }
 
 .countdown {
     background-color: #2d1e2f;
     padding: 5px;
     color: whitesmoke;
-    border-radius: 8%;
+    border-radius: 10px;
 }
 
 .attempt {
     background-color: #2d1e2f;
     padding: 5px;
     color: whitesmoke;
-    border-radius: 8%;
+    border-radius: 10px;
 }
 
 .match {
     background-color: #2d1e2f;
     padding: 5px;
     color: whitesmoke;
-    border-radius: 8%;
+    border-radius: 10px;
 }
 
 @media (min-width: 450px) {
@@ -161,7 +162,7 @@ button {
         padding: 5vmin;
         flex-direction: column;
         justify-content: space-around;
-        align-items: center;
+        align-items: stretch;
         gap: 5px;
     }
 }
