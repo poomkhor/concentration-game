@@ -1,18 +1,44 @@
+/* color palette
+honeydew : #eaf2e3
+cyan : #61e8e1
+bittersweet red : #f25757
+maize : f2e863
+naples yellow : f2cd60 */
+
+/*
+chili red : #E3170A
+celadon : #A9E5BB
+vanilla : #FCF6B1
+xanthous : #F7B32B
+dark purple : #2D1E2F
+ */
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    background-color: #eaf2e3;
+    display: grid;
+    background-color: white;
 }
 
 header {
     display: flex;
+    font-family: 'BioRhyme';
+    font-size: 6vmin;
     width: 100%;
-    background-color: yellowgreen;
+    background-color: #fcf6b1;
     padding: 20px;
     margin: 0;
     justify-content: center;
+    align-content: center;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+    margin: 5vmin;
+    font-family: 'Oxygen';
 }
 
 main {
@@ -21,16 +47,17 @@ main {
 
 .container {
     display: flex;
+    justify-content: center;
 }
 
 .card-container {
     display: grid;
     /* grid-template-columns: repeat(6, 10vmin); */
     grid-template-columns: repeat(6, 10vmin);
-    margin: 30px;
+    margin: 1vmin;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 1vmin;
 }
 
 .card-container > div {
@@ -39,49 +66,76 @@ main {
     align-items: center;
     width: 8vmin;
     height: 10vmin;
-    background-color: orchid;
-    border: 3px solid rgb(102, 0, 255);
+    background-color: #f7b32b;
     font-size: 3em;
     border-radius: 20%;
 }
 
+.card-container > div.show-img {
+    background-color: white;
+    border: white;
+}
+
+img {
+    width: 10vmin;
+    height: 10vmin;
+}
+
 .game-controller {
     display: flex;
+    background-color: #a9e5bb;
+    padding: 5vmin;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    font-family: 'rasa';
 }
 
 .game-controller > div {
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+button {
+    background-color: #e3170a;
+    padding: 10px;
+    color: white;
+    font-family: 'Rasa';
+    border-radius: 12%;
+    margin: 5px;
 }
 
 .score {
+    background-color: #2d1e2f;
+    padding: 5px;
+    color: whitesmoke;
+    border-radius: 8%;
 }
 
 .level {
+    background-color: #2d1e2f;
+    padding: 5px;
+    color: whitesmoke;
+    border-radius: 8%;
 }
 
 .countdown {
+    background-color: #2d1e2f;
+    padding: 5px;
+    color: whitesmoke;
+    border-radius: 8%;
 }
 
 .attempt {
+    background-color: #2d1e2f;
+    padding: 5px;
+    color: whitesmoke;
+    border-radius: 8%;
 }
 
 .match {
-}
-
-.message-on-top {
-}
-
-.message-on-top.not-visible {
-    display: None;
-}
-
-.message-on-top.visible {
-    display: flex;
-}
-
-.show-img {
-    background-color: #eaf2e3;
+    background-color: #2d1e2f;
+    padding: 5px;
+    color: whitesmoke;
+    border-radius: 8%;
 }
