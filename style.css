@@ -26,6 +26,7 @@ header {
     display: flex;
     font-family: 'BioRhyme';
     font-size: 6vmin;
+    font-weight: bold;
     width: 100%;
     background-color: #fcf6b1;
     padding: 20px;
@@ -39,6 +40,7 @@ h2 {
     justify-content: center;
     margin: 5vmin;
     font-family: 'Oxygen';
+    font-size: 4vmin;
 }
 
 main {
@@ -87,13 +89,15 @@ img {
     padding: 5vmin;
     flex-direction: column;
     justify-content: space-around;
-    font-family: 'rasa';
+    gap: 5px;
 }
 
 .game-controller > div {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'rasa';
+    font-size: 3.5vmin;
 }
 
 button {
@@ -101,8 +105,9 @@ button {
     padding: 10px;
     color: white;
     font-family: 'Rasa';
+    font-size: 4.5vmin;
     border-radius: 12%;
-    margin: 5px;
+    /* margin: 5px; */
 }
 
 .score {

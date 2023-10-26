@@ -66,7 +66,7 @@ function init() {
 
     // hang time
     hangtime = { 1: 3000, 2: 2500, 3: 2000, 4: 1500, 5: 1000, 6: 500 };
-    // create a shuffling function and map to divID array
+    // create a shuffling function and map to divID array into an object
     cardState = cardRandomState();
     console.log(cardState);
 
@@ -141,14 +141,14 @@ function displayCard(cardNumber) {
         cardSelector = `[data-id="${cardNumber}"]`;
         const cell = document.querySelector(cardSelector);
         cell.classList.add('show-img');
-        // below will later be replace with image href from imgHref
-        cell.innerHTML = imgHref[cardNumber];
+        // set cell innerText to equal the href value from card state of the clicked div id
+        cell.innerHTML = imgHref[cardState[cardNumber]];
     } else if (cardOpen === 1) {
         cardSelector = `[data-id="${cardNumber}"]`;
         const cell = document.querySelector(cardSelector);
         cell.classList.add('show-img');
-        // below will later be replace with image href from imgHref
-        cell.innerHTML = imgHref[cardNumber];
+        // set cell innerText to equal the href value from card state of the clicked div id
+        cell.innerHTML = imgHref[cardState[cardNumber]];
         attempt += 1;
         // display
         attemptElement.innerHTML = attempt;
