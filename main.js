@@ -1,5 +1,3 @@
-console.log('This is working!');
-
 // PSUEDO CODE
 // 1. The game should start whenever there's a click on the card shown on screen
 // 2. The countdown starts
@@ -52,19 +50,19 @@ function init() {
     match = 0;
     matchElement.innerHTML = match;
     // game init state
-    // divID = [
-    //     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    //     21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-    // ];
-    // cardIdx = [
-    //     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3,
-    //     4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-    // ];
+    divID = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+    ];
+    cardIdx = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3,
+        4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+    ];
 
     // divID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     // cardIdx = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
-    divID = [1, 2, 3, 4, 5, 6];
-    cardIdx = [1, 2, 3, 1, 2, 3];
+    // divID = [1, 2, 3, 4, 5, 6];
+    // cardIdx = [1, 2, 3, 1, 2, 3];
 
     // hang time
     hangtime = { 1: 3000, 2: 2500, 3: 2000, 4: 1500, 5: 1000, 6: 500 };
@@ -73,7 +71,26 @@ function init() {
     console.log(cardState);
 
     // made an object that will map cardIdx to img href
-    imgHref = {};
+    imgHref = {
+        1: '<img src="./img/emoticon1.png">',
+        2: '<img src="./img/emoticon2.png">',
+        3: '<img src="./img/emoticon3.png">',
+        4: '<img src="./img/emoticon4.png">',
+        5: '<img src="./img/emoticon5.png">',
+        6: '<img src="./img/emoticon6.png">',
+        7: '<img src="./img/emoticon7.png">',
+        8: '<img src="./img/emoticon8.png">',
+        9: '<img src="./img/emoticon9.png">',
+        10: '<img src="./img/emoticon10.png">',
+        11: '<img src="./img/emoticon11.png">',
+        12: '<img src="./img/emoticon12.png">',
+        13: '<img src="./img/emoticon13.png">',
+        14: '<img src="./img/emoticon14.png">',
+        15: '<img src="./img/emoticon15.png">',
+        16: '<img src="./img/emoticon16.png">',
+        17: '<img src="./img/emoticon17.png">',
+        18: '<img src="./img/emoticon18.png">',
+    };
 }
 
 // add 'CONTROLLER' to listen to users action and set function that should manipulate the model
@@ -90,7 +107,7 @@ cardElement.addEventListener('click', function (event) {
     displayCard(cardNumber);
     checkMatch();
     checkWin();
-    console.info('win ', win);
+
     // check if match, matched keep displayed
 });
 
@@ -100,7 +117,6 @@ resetElement.addEventListener('click', function (event) {
     init();
     h2Element.innerHTML = '';
     const cardAll = document.querySelectorAll('.card-container>div');
-    // console.info('Card All ', cardAll);
     for (let el of cardAll) {
         el.innerHTML = '';
         el.classList.remove('show-img');
@@ -111,7 +127,6 @@ resetElement.addEventListener('click', function (event) {
 function cardRandomState() {
     // got this from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array// not fully understand this, but it should be working with small array.
     let shuffleCard = cardIdx.sort(() => Math.random() - 0.5);
-    // console.log(shuffleCard);
     let cardStateObj = {};
     divID.forEach((el, idx) => {
         cardStateObj[el] = shuffleCard[idx];
@@ -122,22 +137,20 @@ function cardRandomState() {
 function displayCard(cardNumber) {
     // check if card open with exact class show-img
     cardOpen = document.querySelectorAll('.show-img:not(.match)').length;
-    // console.log('card open ', cardOpen);
     if (cardOpen === 0) {
         cardSelector = `[data-id="${cardNumber}"]`;
         const cell = document.querySelector(cardSelector);
         cell.classList.add('show-img');
         // below will later be replace with image href from imgHref
-        cell.innerHTML = cardState[cardNumber];
+        cell.innerHTML = imgHref[cardNumber];
     } else if (cardOpen === 1) {
         cardSelector = `[data-id="${cardNumber}"]`;
         const cell = document.querySelector(cardSelector);
         cell.classList.add('show-img');
         // below will later be replace with image href from imgHref
-        cell.innerHTML = cardState[cardNumber];
+        cell.innerHTML = imgHref[cardNumber];
         attempt += 1;
         // display
-        console.log('attempt ', attempt);
         attemptElement.innerHTML = attempt;
     } else if (cardOpen === 2) {
         return;
@@ -202,7 +215,6 @@ function calcScore() {
     const timeArr = timerElement.innerHTML.split(':');
     seconds = timeArr[0] * 60 + timeArr[1];
     score = seconds * 10 - attempt;
-    console.info('score ', score);
     if (level === 1) {
         scoreElement.innerHTML = score;
     } else {
@@ -222,7 +234,6 @@ function resetState() {
     matchElement.innerHTML = match;
     resetTimer();
     win = undefined;
-    console.info('reset state win ', win);
     // reset card innerHTML
     // remove class show-img and match
     const cardMatch = document.querySelectorAll('.show-img.match');
@@ -235,8 +246,8 @@ function resetState() {
 
 function resetTimer() {
     // timer for 3 minutes and timer should stop if win = true
-    minute = 0;
-    second = 30;
+    minute = 1;
+    second = 0;
     if (timer) {
         clearInterval(timer);
         timer = undefined;
