@@ -59,12 +59,6 @@ function init() {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1, 2, 3,
         4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
     ];
-
-    // divID = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    // cardIdx = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
-    // divID = [1, 2, 3, 4, 5, 6];
-    // cardIdx = [1, 2, 3, 1, 2, 3];
-
     // hang time
     hangtime = { 1: 3000, 2: 2500, 3: 2000, 4: 1500, 5: 1000, 6: 500 };
     // create a shuffling function and map to divID array into an object
@@ -240,6 +234,7 @@ function resetState() {
     matchElement.innerHTML = match;
     resetTimer();
     win = undefined;
+    cardState = cardRandomState();
     // reset card innerHTML
     // remove class show-img and match
     const cardMatch = document.querySelectorAll('.show-img.match');
@@ -252,13 +247,13 @@ function resetState() {
 
 function resetTimer() {
     // timer for 3 minutes and timer should stop if win = true
-    minute = 3;
-    second = 0;
+    minute = 0;
+    second = 30;
     if (timer) {
         clearInterval(timer);
         timer = undefined;
     }
-    // else {
+
     timer = setInterval(() => {
         if (second === 0) {
             if (minute === 0) {
