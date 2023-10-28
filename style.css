@@ -85,6 +85,12 @@ img {
     height: 10vmin;
 }
 
+.game-console {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+}
 .game-controller {
     display: flex;
     background-color: #a9e5bb;

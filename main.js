@@ -105,10 +105,10 @@ cardElement.addEventListener('click', function (event) {
     const cardNumber = event.target.dataset.id;
     // check number of card being displayed, 1 allow more click, 2 wait for hang time
     displayCard(cardNumber);
+    // check if match, matched keep displayed
     checkMatch();
     checkWin();
     console.info(cardElement);
-    // check if match, matched keep displayed
 });
 
 // reinit the game when the reset button is clicked
