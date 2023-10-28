@@ -1,3 +1,5 @@
+<p align='center'><img src="./img/Logo.jpg" width=300 height=300></p>
+
 # Concentración Juego
 
 ### Concentration Game
@@ -44,7 +46,7 @@ PSUEDO CODE
 
 ## :scream: Bugs to fix :poop:
 
--   if you click more than 2 cards, the next hangtime start counting so you might have less hangtime than you suppose to.
+-   :wrench: [**FIXED**] if you click more than 2 cards, the next hangtime start counting so you might have less hangtime than you suppose to.
 
 ## :sob: Lessons learnt
 

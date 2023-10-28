@@ -103,11 +103,9 @@ cardElement.addEventListener('click', function (event) {
     // get the id of the card
     const cardNumber = event.target.dataset.id;
     // check number of card being displayed, 1 allow more click, 2 wait for hang time
-    console.info(cardElement);
     displayCard(cardNumber);
     checkMatch();
     checkWin();
-
     // check if match, matched keep displayed
 });
 
@@ -172,14 +170,14 @@ function checkMatch() {
             card2.classList.add('match');
             match += 1;
             matchElement.innerHTML = match;
-        } else {
-            setTimeout(returnCard, hangtime[level]);
         }
+    } else {
+        timeout = setTimeout(returnCard, hangtime[level]);
     }
 }
 
 function returnCard() {
-    // hangtime then remove the show-img class
+    //remove the show-img class after hangtime
     const cards = document.querySelectorAll('.show-img:not(.match)');
     const card1 = cards[0];
     const card2 = cards[1];
