@@ -21,6 +21,7 @@ let hangtime;
 let imgHref;
 let score;
 let timer;
+let timeout;
 
 // accessing the DOM element during event listener ('click')
 // cache HTML element
@@ -106,6 +107,7 @@ cardElement.addEventListener('click', function (event) {
     displayCard(cardNumber);
     checkMatch();
     checkWin();
+    console.info(cardElement);
     // check if match, matched keep displayed
 });
 
@@ -163,6 +165,9 @@ function checkMatch() {
     // check card with only class='show-img' if innerHTML match? then add match class, or move to returnCard function
     const cards = document.querySelectorAll('.show-img:not(.match)');
     if (cards.length === 2) {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
         const card1 = cards[0];
         const card2 = cards[1];
         if (card1.innerHTML === card2.innerHTML) {
@@ -170,15 +175,18 @@ function checkMatch() {
             card2.classList.add('match');
             match += 1;
             matchElement.innerHTML = match;
+        } else {
+            timeout = setTimeout(returnCard, hangtime[level]);
         }
-    } else {
-        timeout = setTimeout(returnCard, hangtime[level]);
     }
 }
 
 function returnCard() {
     //remove the show-img class after hangtime
     const cards = document.querySelectorAll('.show-img:not(.match)');
+    if (cards.length === 1) {
+        return;
+    }
     const card1 = cards[0];
     const card2 = cards[1];
     card1.classList.remove('show-img');
